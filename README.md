@@ -63,11 +63,14 @@ dansRoll();
 ```
 
 a. Where is closure used in this code? How can you tell?
+closure is used in this code which allows ${name} to access the parameter of the function because it is a child of the function aka the function is on a higher level than where ${name} is invoked in the code
 
 b. Compare and contrast calling `dansRoll` the first and second time. What is always the same? What could change?
+ "Dan rolled a " is always the same
+ the value of {newRoll} changes everytime
 
 c. What is the lexical scope of `newRoll`? 
-
+lexical scope of the function in which it is nested
 
 ### Task 2c - Exit Ticket
 

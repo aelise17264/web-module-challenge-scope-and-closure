@@ -36,7 +36,8 @@ function processFirstItem(stringList, callback) {
  * 3. In what scenario would the counter1 code be preferable? In what scenario would
  *  counter2 be better? 
  *counter1 would be preferable when we wish to keep our variable safe within our function scope
- counter2 would be preferable when we wish to access the count variable within the global scope
+ counter2 would be preferable when we wish to access the count variable within the global scope which we would
+ be able to invoke at diff levels of our code
 */
 
 // counter1 code
@@ -181,11 +182,11 @@ function scoreboard(callback, index) {
     if (currentIndex === index) {
       //debugger;
 
-      return `${currentIndex}st Inning: ${home} - ${away} \n Final Score: ${home} - ${away}`;
+      return `${currentIndex} Inning: ${home} - ${away} \n Final Score: ${home} - ${away}`;
       
     } else {
       //debugger;
-      return `${currentIndex}st inning: ${home} - ${away}`;
+      return `${currentIndex} inning: ${home} - ${away}`;
     }
   }
 }
