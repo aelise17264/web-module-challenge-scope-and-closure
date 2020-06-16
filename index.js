@@ -43,7 +43,7 @@ function processFirstItem(stringList, callback) {
 function counterMaker() {
   let count = 0;
   return function counter() {
-   return count++;
+    return count++;
   }
 }
 
@@ -67,9 +67,9 @@ function counter2() {
 Write a function called `inning` that generates a random number of points that a team 
 scored in an inning. This should be a whole number between 0 and 2. */
 
-function inning(max, min){
-    let score= Math.floor(Math.random() * (max - min) + min);
-    return score;
+function inning(max, min) {
+  let score = Math.floor(Math.random() * (max - min) + min);
+  return score;
 }
 console.log(inning(3, 0));
 
@@ -87,7 +87,7 @@ finalScore(inning, 9) might return:
   "Away": 5,
 }
 
-*/ 
+*/
 
 /*function finalScore(callback, num1){
   const scores =[{"Home": (callback(num1) * num1),
@@ -98,14 +98,16 @@ finalScore(inning, 9) might return:
 console.log(finalScore(inning, 9));
 */
 
-function finalScore(callback, num1, min){
-  let scores = {'Home': 0,
-                'Away': 0};
-          for (let i = 0; i < num1; i++){
-            scores.Home += callback(i, min);
-            scores.Away += callback(i, min);
-          }
-          return {scores}
+function finalScore(callback, num1, min) {
+  let scores = {
+    'Home': 0,
+    'Away': 0
+  };
+  for (let i = 0; i < num1; i++) {
+    scores.Home += callback(i, min);
+    scores.Away += callback(i, min);
+  }
+  return { scores }
 
 }
 console.log(finalScore(inning, 9, 0));
@@ -133,48 +135,66 @@ and returns the score at each pont in the game, like so:
 Final Score: 6 - 10 */
 
 function scoreboard(callback, index) {
-let num1 = 0;
-let home = 0;
-let away = 0;
+  let currentIndex = 0;
+  let home = 0;
+  let away = 0;
 
-return function finalTally() {
-num1++;
-let touchDown = callback();
-let fieldGoal = callback();
-let firstScore = 0;
-let nextScore = 1;
-let teamScore = 2;
 
-if (firstScore === touchDown) {
-  home += 1;
+  return function finalTally() {
+    currentIndex++;
+    let touchDown = callback(2,0);
+    let fieldGoal = callback(2,0);
+    let homeScore = 0;
+    let awayScore = 1;
+    let multiScore = 2;
+    //debugger;
 
-if (fieldGoal === 2) {
-  while (teamScore === fieldGoal){
+    if (homeScore === touchDown) {
       home += 1;
-      fieldGoal = callback();
+      //debugger;
+
+
+      if (fieldGoal === multiScore) {
+        while (multiScore === fieldGoal) {
+          home += 1;
+          fieldGoal = callback(2,0);
+          //debugger;
+
+        }
+      }
+    }
+
+    else if (awayScore === touchDown) {
+      away += 1;
+     // debugger;
+
+
+      if (fieldGoal === 2) {
+        while (multiScore === fieldGoal) {
+          away += 1;
+          fieldGoal = callback(2,0);
+                //debugger;
+
+        }
+      }
+    }
+    if (currentIndex === index) {
+      //debugger;
+
+      return `${currentIndex}st Inning: ${home} - ${away} \n Final Score: ${home} - ${away}`;
+      
+    } else {
+      //debugger;
+      return `${currentIndex}st inning: ${home} - ${away}`;
+    }
   }
 }
+const index = 9;
+const scoreboardFindings = scoreboard(inning, index);
 
-} else if (nextScore === touchDown){
-  away += 1;
-}
 
-if (fieldGoal === 2){
-  while (teamScore === fieldGoal){
-    away += 1;
-    fieldGoal = callback();
-  }
+for (let i = 0; i < index; i++) {
 
-  if (num1 === index){
-    return `${index}st Inning: ${home} - ${away} /n Final Score: ${home} -${away}`
-
-  } else {
-    return `${index}st inning: ${home} - ${away}`;
-  }
-}
-
-const scoreboardFindings = scoreboard(inning, 9);
-
-for (let i = 0; i < index; i++){
-}
   console.log(scoreboardFindings())
+}
+
