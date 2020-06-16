@@ -27,22 +27,31 @@ function processFirstItem(stringList, callback) {
  * Study the code for counter1 and counter2. Answer the questions below.
  * 
  * 1. What is the difference between counter1 and counter2?
+ * the 'count' variable in counter1 has function scope while 'count' in counter2 has global scope
+ * 
  * 
  * 2. Which of the two uses a closure? How can you tell?
+ * counter1 uses closure because the variable is defined within the function
  * 
- * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better? 
- *
+ * 3. In what scenario would the counter1 code be preferable? In what scenario would
+ *  counter2 be better? 
+ *counter1 would be preferable when we wish to keep our variable safe within our function scope
+ counter2 would be preferable when we wish to access the count variable within the global scope which we would
+ be able to invoke at diff levels of our code
 */
 
 // counter1 code
 function counterMaker() {
   let count = 0;
   return function counter() {
-   return count++;
+    return count++;
   }
 }
 
 const counter1 = counterMaker();
+//console.log(counter1());
+//console.log(counter1());
+
 
 // counter2 code
 let count = 0;
@@ -51,20 +60,25 @@ function counter2() {
   return count++;
 }
 
+//console.log(counter2());
+//console.log(counter2());
 
 /* Task 2: inning() 
 
-Write a function called `inning` that generates a random number of points that a team scored in an inning. This should be a whole number between 0 and 2. */
+Write a function called `inning` that generates a random number of points that a team 
+scored in an inning. This should be a whole number between 0 and 2. */
 
-function inning(/*Code Here*/){
-
-    /*Code Here*/
-
+function inning(max, min) {
+  let score = Math.floor(Math.random() * (max - min) + min);
+  return score;
 }
+console.log(inning(3, 0));
 
 /* Task 3: finalScore()
 
-Write a higher order function called `finalScore` that accepts the callback function `inning` (from above) and a number of innings and and returns the final score of the game in the form of an object.
+Write a higher order function called `finalScore` that accepts the callback function 
+`inning` (from above) and a number of innings and and returns the final score of the 
+game in the form of an object.
 
 For example, 
 
@@ -74,13 +88,31 @@ finalScore(inning, 9) might return:
   "Away": 5,
 }
 
-*/ 
+*/
 
-function finalScore(/*code Here*/){
+/*function finalScore(callback, num1){
+  const scores =[{"Home": (callback(num1) * num1),
+                  "Away": (callback(num1) * num1)}];
+      
+    return scores
+}
+console.log(finalScore(inning, 9));
+*/
 
-  /*Code Here*/
+function finalScore(callback, num1, min) {
+  let scores = {
+    'Home': 0,
+    'Away': 0
+  };
+  for (let i = 0; i < num1; i++) {
+    scores.Home += callback(i, min);
+    scores.Away += callback(i, min);
+  }
+  return { scores }
 
 }
+console.log(finalScore(inning, 9, 0));
+
 
 /* Task 4: 
 
@@ -103,8 +135,67 @@ and returns the score at each pont in the game, like so:
 
 Final Score: 6 - 10 */
 
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
-}
+function scoreboard(callback, index) {
+  let currentIndex = 0;
+  let home = 0;
+  let away = 0;
 
+
+  return function finalTally() {
+    currentIndex++;
+    let touchDown = callback(2,0);
+    let fieldGoal = callback(2,0);
+    let homeScore = 0;
+    let awayScore = 1;
+    let multiScore = 2;
+    //debugger;
+
+    if (homeScore === touchDown) {
+      home += 1;
+      //debugger;
+
+
+      if (fieldGoal === multiScore) {
+        while (multiScore === fieldGoal) {
+          home += 1;
+          fieldGoal = callback(2,0);
+          //debugger;
+
+        }
+      }
+    }
+
+    else if (awayScore === touchDown) {
+      away += 1;
+     // debugger;
+
+
+      if (fieldGoal === 2) {
+        while (multiScore === fieldGoal) {
+          away += 1;
+          fieldGoal = callback(2,0);
+                //debugger;
+
+        }
+      }
+    }
+    if (currentIndex === index) {
+      //debugger;
+
+      return `${currentIndex} Inning: ${home} - ${away} \n Final Score: ${home} - ${away}`;
+      
+    } else {
+      //debugger;
+      return `${currentIndex} inning: ${home} - ${away}`;
+    }
+  }
+}
+const index = 9;
+const scoreboardFindings = scoreboard(inning, index);
+
+
+for (let i = 0; i < index; i++) {
+
+  console.log(scoreboardFindings())
+}
 
